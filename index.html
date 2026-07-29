@@ -131,9 +131,9 @@ img{max-width:100%;display:block}
   pointer-events:none
 }
 .hero-inner{
-  display:flex;align-items:center;gap:64px;max-width:1160px;margin:0 auto;position:relative;z-index:1;width:100%
+  max-width:800px;margin:0 auto;position:relative;z-index:1;width:100%
 }
-.hero-copy{flex:1;max-width:580px;text-align:center;margin:0 auto}
+.hero-copy{text-align:center;margin:0 auto}
 .hero-logo{display:block;margin:0 auto 24px;border-radius:22px;box-shadow:var(--shadow-glow);width:88px;height:88px}
 .hero-eyebrow{
   font-size:13px;font-weight:600;color:var(--brand-blue);letter-spacing:1.5px;
@@ -169,30 +169,6 @@ img{max-width:100%;display:block}
 .hero-meta-item .meta-label{
   font-size:12px;color:var(--text-tertiary);margin-top:2px
 }
-.hero-visual{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  max-width:520px
-}
-.hero-visual-card{
-  width:100%;aspect-ratio:4/3;background:var(--bg-card-strong);
-  border:1px solid var(--border-card);border-radius:var(--radius-xl);
-  box-shadow:var(--shadow-lg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-  position:relative
-}
-.hero-visual-card::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(47,128,255,0.03),rgba(124,92,255,0.03),rgba(52,211,166,0.03));
-}
-.hero-visual-inner{
-  position:relative;text-align:center;padding:40px
-}
-.hero-visual-inner .mock-icon{
-  width:64px;height:64px;border-radius:var(--radius-md);margin:0 auto 16px;
-  background:rgba(47,128,255,0.08);display:flex;align-items:center;justify-content:center
-}
-.hero-visual-inner .mock-title{font-size:18px;font-weight:650;color:var(--text-primary);margin-bottom:8px}
-.hero-visual-inner .mock-sub{font-size:13px;color:var(--text-tertiary);line-height:1.6}
 
 /* ═══════════════ Buttons ═══════════════ */
 .btn{
@@ -387,9 +363,7 @@ img{max-width:100%;display:block}
 
 /* ═══════════════ Responsive ═══════════════ */
 @media(max-width:1024px){
-  .hero-inner{flex-direction:column;text-align:center}
-  .hero-copy{max-width:100%}
-  .hero-visual{max-width:100%;margin-top:32px}
+  .hero-inner{max-width:100%;padding:0 20px}
   .features-grid{grid-template-columns:repeat(2,1fr)}
   .feat-card.col-2,.feat-card.col-4{grid-column:span 2}
   .metrics-grid{grid-template-columns:repeat(2,1fr)}
@@ -473,22 +447,6 @@ img{max-width:100%;display:block}
         <div class="hero-meta-item">
           <div class="meta-val">多号</div>
           <div class="meta-label">账号轮换运营</div>
-        </div>
-      </div>
-    </div>
-    <div class="hero-visual reveal reveal-delay-2">
-      <div class="hero-visual-card">
-        <div class="hero-visual-inner">
-          <div class="mock-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <div class="mock-title">自动化获客引擎</div>
-          <div class="mock-sub">
-            扫码登录 → 配置关键词 → 一键启动<br>
-            视频评论区实时监控<br>
-            意向用户自动识别入库<br>
-            多账号轮换私信触达
-          </div>
         </div>
       </div>
     </div>
