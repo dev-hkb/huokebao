@@ -6,322 +6,758 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <title>获客宝 - 抖音智能获客专家</title>
 <style>
+/* ═══════════════ Reset & Base ═══════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-  background:#f8fafc;color:#1e293b;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Helvetica Neue","Microsoft YaHei",system-ui,sans-serif;
+  background:#f5f7fb;color:#0b1220;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden
 }
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
+::selection{background:rgba(47,128,255,0.15);color:#1e63ff}
 
+/* ═══════════════ Design Tokens ═══════════════ */
 :root{
-  --accent:#4f46e5;--accent-hover:#6366f1;--accent-soft:rgba(79,70,229,0.06);
-  --surface:#fff;--surface-raised:#fff;--surface-alt:#f1f5f9;
-  --border:#e2e8f0;--border-light:#f1f5f9;
-  --text:#0f172a;--text-secondary:#475569;--text-dim:#94a3b8;
-  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,0.04);--shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
-  --shadow-hover:0 4px 16px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04)
+  --brand-blue:#2f80ff;
+  --brand-deep:#1e63ff;
+  --brand-mint:#34d3a6;
+  --brand-violet:#7c5cff;
+  --brand-pink:#ff6aa1;
+  --brand-amber:#ffb547;
+  --text-primary:#0b1220;
+  --text-secondary:#475569;
+  --text-tertiary:#6b7a90;
+  --text-muted:#93a0b4;
+  --bg-base:#f5f7fb;
+  --bg-soft:#eef2f9;
+  --bg-card:rgba(255,255,255,0.72);
+  --bg-card-strong:rgba(255,255,255,0.92);
+  --border-card:rgba(15,23,42,0.06);
+  --border-soft:rgba(15,23,42,0.08);
+  --radius-sm:10px;
+  --radius-md:16px;
+  --radius-lg:22px;
+  --radius-xl:28px;
+  --radius-pill:999px;
+  --shadow-sm:0 1px 2px rgba(15,23,42,0.04),0 2px 8px rgba(15,23,42,0.04);
+  --shadow-md:0 8px 24px rgba(15,23,42,0.08);
+  --shadow-lg:0 24px 60px rgba(15,23,42,0.12);
+  --shadow-glow:0 30px 80px rgba(47,128,255,0.18);
+  --shadow-glow-mint:0 20px 60px rgba(52,211,166,0.12);
+  --shadow-glow-violet:0 20px 60px rgba(124,92,255,0.12);
 }
-::selection{background:rgba(79,70,229,0.15);color:var(--accent)}
 
-/* ── Nav ── */
-nav{
+/* ═══════════════ Aurora Background ═══════════════ */
+.bg-aurora{
+  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden
+}
+.bg-aurora::before{
+  content:'';position:absolute;top:-30%;left:-20%;width:70%;height:70%;
+  background:radial-gradient(ellipse,rgba(47,128,255,0.06) 0%,transparent 70%);
+  animation:auroraFloat1 18s ease-in-out infinite
+}
+.bg-aurora::after{
+  content:'';position:absolute;bottom:-25%;right:-15%;width:60%;height:60%;
+  background:radial-gradient(ellipse,rgba(124,92,255,0.05) 0%,transparent 70%);
+  animation:auroraFloat2 22s ease-in-out infinite
+}
+@keyframes auroraFloat1{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(4%,2%) scale(1.08)}
+  66%{transform:translate(-2%,-3%) scale(0.94)}
+}
+@keyframes auroraFloat2{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(-3%,-4%) scale(1.1)}
+}
+
+/* ═══════════════ Dot Grid ═══════════════ */
+.bg-grid{
+  position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.28;
+  background-image:radial-gradient(rgba(15,23,42,0.12) 1px,transparent 1px);
+  background-size:28px 28px
+}
+
+/* ═══════════════ Container ═══════════════ */
+.container{max-width:1160px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+
+/* ═══════════════ Section Header ═══════════════ */
+.section-head-center{text-align:center;margin-bottom:64px}
+.section-eyebrow{
+  display:inline-block;font-size:13px;font-weight:600;color:var(--brand-blue);
+  letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;
+  padding:5px 16px;background:rgba(47,128,255,0.06);border-radius:var(--radius-pill)
+}
+.section-title{
+  font-size:clamp(28px,3.5vw,40px);font-weight:750;letter-spacing:-0.8px;
+  margin-bottom:12px;line-height:1.18;color:var(--text-primary)
+}
+.section-subtitle{
+  font-size:16px;color:var(--text-secondary);max-width:520px;margin:0 auto;line-height:1.6
+}
+
+/* ═══════════════ Navbar ═══════════════ */
+.navbar{
   position:fixed;top:0;left:0;right:0;z-index:100;height:64px;
-  background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);padding:0 32px;
+  background:rgba(245,247,251,0.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border-card);padding:0 32px;
   display:flex;align-items:center;justify-content:space-between
 }
-.nav-brand{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;color:var(--text)}
-.nav-brand img{border-radius:9px;box-shadow:0 2px 8px rgba(79,70,229,0.1)}
+.nav-brand{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;color:var(--text-primary)}
+.brand-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--brand-blue);
+  box-shadow:0 0 12px rgba(47,128,255,0.4)
+}
+.nav-brand img{border-radius:9px;width:34px;height:34px}
 .nav-links{display:flex;gap:32px;font-size:14px;color:var(--text-secondary)}
 .nav-links a{transition:color .2s}
-.nav-links a:hover{color:var(--accent)}
+.nav-links a:hover{color:var(--brand-blue)}
 .nav-cta{
-  background:var(--accent);color:#fff;border:none;padding:9px 24px;border-radius:var(--radius-sm);
+  background:var(--brand-blue);color:#fff;border:none;padding:9px 24px;border-radius:var(--radius-sm);
   font-size:13px;font-weight:600;cursor:pointer;transition:all .25s ease;font-family:inherit
 }
-.nav-cta:hover{background:var(--accent-hover);box-shadow:0 4px 16px rgba(79,70,229,0.2);transform:translateY(-1px)}
+.nav-cta:hover{background:var(--brand-deep);box-shadow:0 4px 20px rgba(47,128,255,0.25);transform:translateY(-1px)}
 
-/* ── Container ── */
-.container{max-width:1160px;margin:0 auto;padding:0 32px}
-
-/* ── Section Header ── */
-.sec-header{text-align:center;margin-bottom:72px}
-.sec-label{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
-.sec-header h2{font-size:36px;font-weight:750;letter-spacing:-0.8px;margin-bottom:12px;line-height:1.2;color:var(--text)}
-.sec-header p{font-size:16px;color:var(--text-secondary);max-width:500px;margin:0 auto}
-
-/* ── Hero ── */
+/* ═══════════════ Hero ═══════════════ */
 .hero{
-  min-height:100dvh;display:flex;align-items:center;padding:120px 32px 80px;position:relative;
-  background:
-    radial-gradient(ellipse 70% 60% at 50% 30%,rgba(79,70,229,0.04) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 70% at 80% 60%,rgba(99,102,241,0.03) 0%,transparent 50%),
-    linear-gradient(180deg,#f8fafc 0%,#fff 100%);
-  overflow:hidden
+  position:relative;min-height:100dvh;display:flex;align-items:center;
+  padding:120px 32px 80px;z-index:1
 }
-.hero::before{
-  content:'';position:absolute;top:0;right:0;width:600px;height:600px;
-  background:radial-gradient(circle,rgba(79,70,229,0.03) 0%,transparent 70%);pointer-events:none
+.hero-glow{
+  position:absolute;top:15%;left:50%;transform:translateX(-50%);
+  width:700px;height:500px;
+  background:radial-gradient(ellipse,rgba(47,128,255,0.08) 0%,transparent 70%);
+  pointer-events:none
 }
-.hero-content{max-width:640px;position:relative;z-index:1;text-align:center;margin:0 auto}
-.hero-logo{display:block;margin:0 auto 28px;border-radius:22px;box-shadow:0 8px 40px rgba(79,70,229,0.12)}
-.hero-eyebrow{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:1.5px;margin-bottom:20px}
-.hero h1{font-size:clamp(40px,6vw,68px);font-weight:800;letter-spacing:-1.5px;line-height:1.08;margin-bottom:20px;color:var(--text)}
-.gradient{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 50%,#a855f7 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:17px;color:var(--text-secondary);max-width:480px;line-height:1.7;margin-bottom:40px}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-inner{
+  display:flex;align-items:center;gap:64px;max-width:1160px;margin:0 auto;position:relative;z-index:1;width:100%
+}
+.hero-copy{flex:1;max-width:580px;text-align:center;margin:0 auto}
+.hero-logo{display:block;margin:0 auto 24px;border-radius:22px;box-shadow:var(--shadow-glow);width:88px;height:88px}
+.hero-eyebrow{
+  font-size:13px;font-weight:600;color:var(--brand-blue);letter-spacing:1.5px;
+  margin-bottom:18px
+}
+.hero-title{
+  font-size:clamp(38px,5.5vw,64px);font-weight:800;letter-spacing:-1.5px;
+  line-height:1.08;margin-bottom:20px;color:var(--text-primary)
+}
+.hero-title .gradient{
+  background:linear-gradient(135deg,#2f80ff 0%,#7c5cff 50%,#34d3a6 90%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+.hero-bracket{
+  display:inline-block;color:var(--brand-mint);font-weight:400;margin:0 4px
+}
+.hero-sub{
+  font-size:17px;color:var(--text-secondary);max-width:460px;margin:0 auto 36px;line-height:1.7
+}
+.hero-actions{
+  display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:32px
+}
+.hero-meta{
+  display:flex;gap:32px;flex-wrap:wrap;justify-content:center;padding-top:24px;
+  border-top:1px solid var(--border-card)
+}
+.hero-meta-item{
+  text-align:center
+}
+.hero-meta-item .meta-val{
+  font-size:22px;font-weight:700;color:var(--brand-blue)
+}
+.hero-meta-item .meta-label{
+  font-size:12px;color:var(--text-tertiary);margin-top:2px
+}
+.hero-visual{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  max-width:520px
+}
+.hero-visual-card{
+  width:100%;aspect-ratio:4/3;background:var(--bg-card-strong);
+  border:1px solid var(--border-card);border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-lg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  position:relative
+}
+.hero-visual-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(47,128,255,0.03),rgba(124,92,255,0.03),rgba(52,211,166,0.03));
+}
+.hero-visual-inner{
+  position:relative;text-align:center;padding:40px
+}
+.hero-visual-inner .mock-icon{
+  width:64px;height:64px;border-radius:var(--radius-md);margin:0 auto 16px;
+  background:rgba(47,128,255,0.08);display:flex;align-items:center;justify-content:center
+}
+.hero-visual-inner .mock-title{font-size:18px;font-weight:650;color:var(--text-primary);margin-bottom:8px}
+.hero-visual-inner .mock-sub{font-size:13px;color:var(--text-tertiary);line-height:1.6}
+
+/* ═══════════════ Buttons ═══════════════ */
 .btn{
   display:inline-flex;align-items:center;gap:8px;padding:15px 32px;border-radius:var(--radius-sm);
-  font-size:14px;font-weight:600;cursor:pointer;transition:all .25s ease;border:none;font-family:inherit;text-decoration:none
+  font-size:14px;font-weight:600;cursor:pointer;transition:all .25s ease;border:none;
+  font-family:inherit;text-decoration:none
 }
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:var(--accent-hover);box-shadow:0 8px 24px rgba(79,70,229,0.2);transform:translateY(-2px)}
-.btn-outline{background:var(--surface);color:var(--text);border:1.5px solid var(--border);box-shadow:var(--shadow-sm)}
-.btn-outline:hover{border-color:#c7d2fe;background:var(--accent-soft);transform:translateY(-1px)}
+.btn-primary{
+  background:var(--brand-blue);color:#fff;
+  box-shadow:0 4px 16px rgba(47,128,255,0.2)
+}
+.btn-primary:hover{background:var(--brand-deep);box-shadow:0 8px 28px rgba(47,128,255,0.3);transform:translateY(-2px)}
+.btn-outline{
+  background:var(--bg-card-strong);color:var(--text-primary);
+  border:1.5px solid var(--border-card);box-shadow:var(--shadow-sm);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)
+}
+.btn-outline:hover{border-color:rgba(47,128,255,0.2);background:rgba(47,128,255,0.04);transform:translateY(-1px)}
 .btn svg{flex-shrink:0}
 
-/* ── Logo wall ── */
-.logo-wall{padding:32px 0;border-bottom:1px solid var(--border-light);background:var(--surface-alt)}
-.logo-wall-inner{display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
-.logo-wall span{font-size:12px;color:var(--text-dim);font-weight:600;letter-spacing:0.5px}
-
-/* ── Features (8-item bento) ── */
-.features{padding:120px 0;background:var(--surface)}
-.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.bento-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
-  padding:36px 28px;transition:all .35s ease;position:relative;overflow:hidden;box-shadow:var(--shadow-sm)
+/* ═══════════════ Logo Wall ═══════════════ */
+.logo-wall{
+  padding:28px 0;border-bottom:1px solid var(--border-card);
+  background:rgba(255,255,255,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
 }
-.bento-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);border-color:#c7d2fe}
-.bento-card.col-2{grid-column:span 2}
-.bento-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;background:var(--accent-soft);color:var(--accent)}
-.bento-card h3{font-size:16px;font-weight:650;margin-bottom:6px;color:var(--text)}
-.bento-card p{color:var(--text-secondary);font-size:13px;line-height:1.65}
-.bento-card.accent{background:linear-gradient(135deg,rgba(79,70,229,0.02),rgba(99,102,241,0.01));border-color:rgba(79,70,229,0.1)}
-
-/* ── How ── */
-.how{padding:120px 0;background:var(--surface-alt);border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light)}
-.how-steps{display:flex;gap:40px;justify-content:center;flex-wrap:wrap}
-.how-step{flex:1;text-align:center;min-width:180px;max-width:260px}
-.how-step-num{
-  width:56px;height:56px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;
-  font-size:20px;font-weight:700;color:var(--accent);background:var(--accent-soft);border:2px solid rgba(79,70,229,0.08)
+.logo-wall-inner{
+  display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap
 }
-.how-step h3{font-size:17px;font-weight:650;margin-bottom:6px;color:var(--text)}
-.how-step p{color:var(--text-secondary);font-size:14px;line-height:1.6}
+.logo-wall span{
+  font-size:12px;color:var(--text-tertiary);font-weight:600;letter-spacing:0.5px;
+  display:flex;align-items:center;gap:8px
+}
+.logo-wall .dot-sep{
+  width:5px;height:5px;border-radius:50%;background:var(--brand-mint)
+}
 
-/* ── Audience ── */
-.audience{padding:120px 0;background:var(--surface)}
-.audience-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+/* ═══════════════ Features Grid ═══════════════ */
+.section{padding:100px 0;position:relative;z-index:1}
+.features-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px
+}
+.feat-card{
+  background:var(--bg-card);border:1px solid var(--border-card);
+  border-radius:var(--radius-lg);padding:34px 26px;
+  transition:all .35s ease;position:relative;overflow:hidden;
+  box-shadow:var(--shadow-sm);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+}
+.feat-card:hover{
+  box-shadow:var(--shadow-md);transform:translateY(-3px);
+  border-color:rgba(47,128,255,0.15);background:var(--bg-card-strong)
+}
+.feat-card.col-2{grid-column:span 2}
+.feat-card.col-4{grid-column:span 4}
+.feat-icon{
+  width:44px;height:44px;border-radius:var(--radius-sm);display:flex;
+  align-items:center;justify-content:center;margin-bottom:18px;
+  font-size:20px
+}
+.feat-icon.blue{background:rgba(47,128,255,0.08);color:var(--brand-blue)}
+.feat-icon.mint{background:rgba(52,211,166,0.1);color:#22c792}
+.feat-icon.violet{background:rgba(124,92,255,0.08);color:var(--brand-violet)}
+.feat-icon.pink{background:rgba(255,106,161,0.08);color:var(--brand-pink)}
+.feat-icon.amber{background:rgba(255,181,71,0.1);color:#e8a020}
+.feat-card h3{font-size:17px;font-weight:650;margin-bottom:6px;color:var(--text-primary)}
+.feat-card p{color:var(--text-secondary);font-size:13px;line-height:1.65}
+.feat-card.accent{
+  background:linear-gradient(135deg,rgba(47,128,255,0.03),rgba(124,92,255,0.02));
+  border-color:rgba(47,128,255,0.1)
+}
+
+/* ═══════════════ Flow ═══════════════ */
+.flow-steps{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.flow-step{
+  flex:1;text-align:center;min-width:160px;max-width:200px;
+  background:var(--bg-card);border:1px solid var(--border-card);
+  border-radius:var(--radius-lg);padding:32px 20px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:var(--shadow-sm);transition:all .35s ease
+}
+.flow-step:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.flow-step-num{
+  width:52px;height:52px;border-radius:50%;margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:var(--brand-blue);
+  background:rgba(47,128,255,0.06);border:2px solid rgba(47,128,255,0.1)
+}
+.flow-step h3{font-size:17px;font-weight:650;margin-bottom:6px;color:var(--text-primary)}
+.flow-step p{color:var(--text-secondary);font-size:13px;line-height:1.6}
+
+/* ═══════════════ Audience ═══════════════ */
+.audience-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:14px
+}
 .aud-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
-  padding:36px 32px;text-align:center;box-shadow:var(--shadow-sm)
+  background:var(--bg-card);border:1px solid var(--border-card);
+  border-radius:var(--radius-lg);padding:34px 30px;text-align:center;
+  box-shadow:var(--shadow-sm);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:all .35s ease
 }
-.aud-card h3{font-size:17px;font-weight:650;color:var(--text);margin-bottom:6px}
+.aud-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);background:var(--bg-card-strong)}
+.aud-card .aud-icon{
+  width:48px;height:48px;border-radius:var(--radius-sm);margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;font-size:22px
+}
+.aud-card h3{font-size:18px;font-weight:650;color:var(--text-primary);margin-bottom:6px}
 .aud-card p{color:var(--text-secondary);font-size:14px;line-height:1.6}
 
-/* ── Pricing ── */
-.pricing{padding:120px 0;background:var(--surface-alt)}
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:960px;margin:0 auto}
+/* ═══════════════ Metrics ═══════════════ */
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.metric-card{
+  background:var(--bg-card);border:1px solid var(--border-card);
+  border-radius:var(--radius-lg);padding:36px 24px;text-align:center;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:var(--shadow-sm);transition:all .35s ease
+}
+.metric-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.metric-val{
+  font-size:44px;font-weight:800;letter-spacing:-1px;color:var(--brand-blue);line-height:1
+}
+.metric-val.green{color:#22c792}
+.metric-unit{font-size:16px;font-weight:500}
+.metric-label{font-size:13px;color:var(--text-tertiary);margin-top:6px}
+
+/* ═══════════════ Pricing ═══════════════ */
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:960px;margin:0 auto
+}
 .price-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
-  padding:44px 36px;text-align:center;transition:all .35s ease;position:relative;box-shadow:var(--shadow-sm)
+  background:var(--bg-card);border:1px solid var(--border-card);
+  border-radius:var(--radius-lg);padding:42px 34px;text-align:center;
+  transition:all .35s ease;position:relative;box-shadow:var(--shadow-sm);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
 }
-.price-card.featured{border-color:rgba(79,70,229,0.2);background:linear-gradient(180deg,rgba(79,70,229,0.02),#fff);box-shadow:0 4px 20px rgba(79,70,229,0.06)}
-.price-card.featured::before{content:'推荐';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:3px 18px;border-radius:12px;font-size:12px;font-weight:600}
-.price-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
-.price-card h3{font-size:17px;font-weight:650;color:var(--text);margin-bottom:16px}
-.price-amount{font-size:52px;font-weight:800;letter-spacing:-1px;color:var(--text);line-height:1}
-.price-amount span{font-size:16px;font-weight:500;color:var(--text-secondary)}
-.price-period{font-size:13px;color:var(--text-dim);margin:8px 0 24px}
+.price-card.featured{
+  border-color:rgba(47,128,255,0.25);
+  background:linear-gradient(180deg,rgba(47,128,255,0.04),rgba(255,255,255,0.85));
+  box-shadow:var(--shadow-glow)
+}
+.price-card.featured::before{
+  content:'推荐';position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:var(--brand-blue);color:#fff;padding:3px 18px;border-radius:var(--radius-pill);
+  font-size:12px;font-weight:600
+}
+.price-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.price-card.featured:hover{box-shadow:var(--shadow-glow)}
+.price-card h3{font-size:17px;font-weight:650;color:var(--text-primary);margin-bottom:16px}
+.price-amount{font-size:50px;font-weight:800;letter-spacing:-1px;color:var(--text-primary);line-height:1}
+.price-amount span{font-size:15px;font-weight:500;color:var(--text-secondary)}
+.price-period{font-size:13px;color:var(--text-tertiary);margin:8px 0 24px}
 .price-features{list-style:none;text-align:left;margin-bottom:28px}
-.price-features li{padding:8px 0;font-size:14px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:8px}
-.price-features li::before{content:'';width:18px;height:18px;border-radius:50%;background:var(--accent-soft);flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");background-size:12px;background-position:center;background-repeat:no-repeat}
-
-/* ── CTA ── */
-.cta{text-align:center;padding:120px 0;background:var(--surface)}
-.cta h2{font-size:34px;font-weight:750;color:var(--text);letter-spacing:-0.5px;margin-bottom:12px}
-.cta p{color:var(--text-secondary);margin-bottom:36px;font-size:16px}
-.cta .hero-actions{justify-content:center}
-
-/* ── Footer ── */
-footer{border-top:1px solid var(--border);padding:48px 32px 36px;text-align:center;background:var(--surface);color:var(--text-dim);font-size:13px}
-footer a{color:var(--text-secondary)}footer a:hover{color:var(--accent)}
-
-/* ── Animations ── */
-@media(prefers-reduced-motion:no-preference){
-  .fade-up{opacity:0;transform:translateY(24px)}
-  .fade-up.visible{animation:fadeUp .7s cubic-bezier(.16,1,.3,1) forwards}
-  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.price-features li{
+  padding:8px 0;font-size:14px;color:var(--text-secondary);
+  border-bottom:1px solid var(--border-card);display:flex;align-items:center;gap:8px
+}
+.price-features li::before{
+  content:'';width:18px;height:18px;border-radius:50%;flex-shrink:0;
+  background:rgba(47,128,255,0.08);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232f80ff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-size:12px;background-position:center;background-repeat:no-repeat
 }
 
+/* ═══════════════ CTA ═══════════════ */
+.cta-section{text-align:center;padding:100px 0;position:relative;z-index:1}
+.cta-section .section-title{font-size:clamp(26px,3vw,38px)}
+
+/* ═══════════════ Footer ═══════════════ */
+.site-foot{
+  border-top:1px solid var(--border-card);padding:40px 32px 36px;text-align:center;
+  background:rgba(255,255,255,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  position:relative;z-index:1
+}
+.foot-brand{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:15px;font-weight:650;color:var(--text-primary);margin-bottom:12px
+}
+.foot-meta{font-size:12px;color:var(--text-tertiary);line-height:1.7}
+.foot-disclaimer{
+  margin-top:18px;padding-top:16px;border-top:1px solid var(--border-card);
+  font-size:12px;color:var(--text-muted);max-width:560px;margin-left:auto;margin-right:auto;line-height:1.7
+}
+
+/* ═══════════════ Animations ═══════════════ */
+@media(prefers-reduced-motion:no-preference){
+  .reveal{opacity:0;transform:translateY(24px)}
+  .reveal.visible{animation:revealUp .7s cubic-bezier(.16,1,.3,1) forwards}
+  @keyframes revealUp{to{opacity:1;transform:translateY(0)}}
+  .reveal-delay-1{animation-delay:.1s}
+  .reveal-delay-2{animation-delay:.2s}
+  .reveal-delay-3{animation-delay:.3s}
+  .reveal-delay-4{animation-delay:.4s}
+}
+
+/* ═══════════════ Responsive ═══════════════ */
+@media(max-width:1024px){
+  .hero-inner{flex-direction:column;text-align:center}
+  .hero-copy{max-width:100%}
+  .hero-visual{max-width:100%;margin-top:32px}
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .feat-card.col-2,.feat-card.col-4{grid-column:span 2}
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .pricing-grid{grid-template-columns:1fr;max-width:420px}
+}
 @media(max-width:768px){
-  .hero h1{font-size:36px}.hero-sub{font-size:15px}.nav-links{display:none}
-  .bento{grid-template-columns:repeat(2,1fr)}.bento-card.col-2{grid-column:span 2}
-  .pricing-grid{grid-template-columns:1fr}.audience-grid{grid-template-columns:1fr}
-  .how-steps{flex-direction:column;align-items:center}
+  .hero{padding:100px 20px 60px}
+  .hero-title{font-size:34px}.hero-sub{font-size:15px}
+  .nav-links{display:none}
+  .features-grid{grid-template-columns:1fr}
+  .feat-card.col-2,.feat-card.col-4{grid-column:span 1}
+  .audience-grid{grid-template-columns:1fr}
+  .metrics-grid{grid-template-columns:1fr}
+  .flow-steps{flex-direction:column;align-items:center}
+  .flow-step{max-width:300px}
+  .section{padding:64px 0}
+  .container{padding:0 20px}
+  .hero-meta{gap:20px}
 }
 </style>
 </head>
 <body>
 
-<nav>
+<!-- Aurora background -->
+<div class="bg-aurora"></div>
+<div class="bg-grid"></div>
+
+<!-- ═══════════════ Navbar ═══════════════ -->
+<header class="navbar">
   <div class="nav-brand">
+    <span class="brand-dot"></span>
     <img src="logo.png" alt="获客宝" width="34" height="34">
     获客宝
   </div>
   <div class="nav-links">
     <a href="#features">功能</a>
-    <a href="#how">流程</a>
+    <a href="#flow">流程</a>
+    <a href="#metrics">数据</a>
     <a href="#pricing">定价</a>
     <a href="#download">下载</a>
   </div>
   <a href="#download" class="nav-cta">免费下载</a>
-</nav>
+</header>
 
-<section class="hero">
-  <div class="hero-content fade-up">
-    <img src="logo.png" alt="获客宝" width="96" height="96" class="hero-logo">
-    <div class="hero-eyebrow">抖音营销自动化</div>
-    <h1>获客<br><span class="gradient">从未如此简单</span></h1>
-    <p class="hero-sub">自动监控评论、采集精准线索、智能私信触达。24 小时不间断运行，让客户主动找上门。</p>
-    <div class="hero-actions">
-      <a href="#download" class="btn btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        下载 macOS 版
-      </a>
-      <a href="#download" class="btn btn-outline">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        下载 Windows 版
-      </a>
+<!-- ═══════════════ Hero ═══════════════ -->
+<section class="hero" id="top">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-copy reveal">
+      <img src="logo.png" alt="获客宝" class="hero-logo" width="88" height="88">
+      <div class="hero-eyebrow section-eyebrow">桌面版 · 多账号自动运营</div>
+      <h1 class="hero-title">
+        把抖音流量<span class="hero-bracket"></span><br><span class="gradient">变成精准客户</span>
+      </h1>
+      <p class="hero-sub">
+        自动监控评论 · AI 识别意向 · 多账号自动私信 · 24 小时不间断运行。<br>让每一条"怎么买""多少钱""在哪里"的评论，都被第一时间接住。
+      </p>
+      <div class="hero-actions">
+        <a href="#download" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          下载 macOS 版
+        </a>
+        <a href="#download" class="btn btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          下载 Windows 版
+        </a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <div class="meta-val">10 秒</div>
+          <div class="meta-label">评论响应延迟</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="meta-val">7×24</div>
+          <div class="meta-label">后台无人值守</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="meta-val">本地</div>
+          <div class="meta-label">数据加密存储</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="meta-val">多号</div>
+          <div class="meta-label">账号轮换运营</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual reveal reveal-delay-2">
+      <div class="hero-visual-card">
+        <div class="hero-visual-inner">
+          <div class="mock-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="mock-title">自动化获客引擎</div>
+          <div class="mock-sub">
+            扫码登录 → 配置关键词 → 一键启动<br>
+            视频评论区实时监控<br>
+            意向用户自动识别入库<br>
+            多账号轮换私信触达
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="logo-wall"><div class="logo-wall-inner">
-  <span>macOS</span><span>Windows</span><span>Node.js 全栈</span><span>24h 不间断</span>
-</div></div>
+<!-- ═══════════════ Logo Wall ═══════════════ -->
+<div class="logo-wall">
+  <div class="logo-wall-inner">
+    <span><span class="dot-sep"></span> macOS</span>
+    <span><span class="dot-sep"></span> Windows</span>
+    <span><span class="dot-sep"></span> Node.js 全栈</span>
+    <span><span class="dot-sep"></span> 24h 不间断</span>
+    <span><span class="dot-sep"></span> 本地加密</span>
+  </div>
+</div>
 
-<section class="features" id="features">
+<!-- ═══════════════ Features ═══════════════ -->
+<section class="section" id="features">
   <div class="container">
-    <div class="sec-header fade-up">
-      <div class="sec-label">八大核心能力</div>
-      <h2>覆盖抖音获客全场景</h2>
-      <p>从评论截流到验证码识别，一站式解决所有获客难题</p>
+    <div class="section-head-center">
+      <span class="section-eyebrow reveal">八大核心能力</span>
+      <h2 class="section-title reveal reveal-delay-1">覆盖抖音获客全场景</h2>
+      <p class="section-subtitle reveal reveal-delay-1">从监控、识别、提醒、私信到线索管理，一站式闭环</p>
     </div>
-    <div class="bento">
-      <div class="bento-card col-2 accent fade-up">
-        <div class="bento-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <h3>自动任务</h3>
-        <p>搜索词扫描评论区，AI 关键词匹配后自动回复，精准截流竞品客户</p>
+    <div class="features-grid">
+      <div class="feat-card col-2 accent reveal">
+        <div class="feat-icon blue">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>自动任务引擎</h3>
+        <p>搜索词扫描评论区，AI 关键词匹配后自动回复。定时启动、智能休眠、异常自恢复。多账号并行，轮流切换避免风控。</p>
       </div>
-      <div class="bento-card col-2 fade-up">
-        <div class="bento-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
-        <h3>视频监控</h3>
-        <p>7x24 轮询评论区，关键词、IP 属地、点赞数多维筛选</p>
+      <div class="feat-card col-2 reveal">
+        <div class="feat-icon mint">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <h3>视频评论截流</h3>
+        <p>监控目标账号新发视频，秒级响应抢占评论区。关键词、IP 属地、点赞数多维筛选，已评论自动去重。</p>
       </div>
-      <div class="bento-card col-2 fade-up">
-        <div class="bento-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="feat-card col-2 reveal">
+        <div class="feat-icon violet">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
         <h3>直播监控</h3>
-        <p>实时接入直播间弹幕流，关键词匹配自动入库</p>
+        <p>WebSocket + Protobuf 实时接入抖音直播间，弹幕流、礼物榜、观众列表实时采集，高价值用户自动标记入库。</p>
       </div>
-      <div class="bento-card col-2 fade-up">
-        <div class="bento-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="feat-card col-2 reveal">
+        <div class="feat-icon pink">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
         <h3>评论采集</h3>
-        <p>批量采集评论，导出 Excel 或直接入库</p>
+        <p>批量采集目标视频评论，多维筛选过滤，一键导出 Excel 或直接入库。支持自定义字段和批量操作。</p>
       </div>
-      <div class="bento-card col-2 fade-up">
-        <div class="bento-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+      <div class="feat-card reveal">
+        <div class="feat-icon amber">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        </div>
         <h3>线索库</h3>
-        <p>自动入库、智能筛选、批量私信、导出 Excel</p>
+        <p>自动入库、智能筛选、批量私信、导出 Excel。全链路追踪从采集到转化。</p>
       </div>
-      <div class="bento-card col-2 fade-up">
-        <div class="bento-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg></div>
-        <h3>账号池管理</h3>
-        <p>多号扫码登录、状态检测、灵活切换</p>
+      <div class="feat-card reveal">
+        <div class="feat-icon blue">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+        </div>
+        <h3>账号池</h3>
+        <p>多号扫码登录、状态检测、灵活切换。按策略自动轮换，降低单号风险。</p>
       </div>
-      <div class="bento-card col-2 accent fade-up">
-        <div class="bento-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <h3>浏览器反检测</h3>
-        <p>深度定制浏览器引擎，规避平台指纹检测和反爬机制</p>
+      <div class="feat-card reveal">
+        <div class="feat-icon violet">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>反检测引擎</h3>
+        <p>深度定制浏览器，WebRTC 防泄露、Canvas 指纹随机化。全面通过主流检测平台。</p>
       </div>
-      <div class="bento-card col-2 fade-up">
-        <div class="bento-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-        <h3>智能验证码识别</h3>
-        <p>图形验证码自动识别引擎，滑块验证自动通过</p>
+      <div class="feat-card reveal">
+        <div class="feat-icon mint">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <h3>验证码识别</h3>
+        <p>深度学习 OCR，毫秒级响应。滑块验证码自动通过，失败自动重试 + 策略降级。</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="how" id="how">
+<!-- ═══════════════ Flow ═══════════════ -->
+<section class="section" id="flow" style="background:rgba(255,255,255,0.3);border-top:1px solid var(--border-card);border-bottom:1px solid var(--border-card)">
   <div class="container">
-    <div class="sec-header fade-up">
-      <div class="sec-label">快速上手</div>
-      <h2>三步开始获客</h2>
-      <p>零技术基础，安装即用</p>
+    <div class="section-head-center">
+      <span class="section-eyebrow reveal">工作流程</span>
+      <h2 class="section-title reveal reveal-delay-1">四步开始获客</h2>
+      <p class="section-subtitle reveal reveal-delay-1">零技术基础，下载即用，5 分钟配置完成</p>
     </div>
-    <div class="how-steps">
-      <div class="how-step fade-up"><div class="how-step-num">1</div><h3>扫码登录</h3><p>打开软件，用抖音 App 扫码登录</p></div>
-      <div class="how-step fade-up"><div class="how-step-num">2</div><h3>设置任务</h3><p>选择模式、输入关键词，一键启动</p></div>
-      <div class="how-step fade-up"><div class="how-step-num">3</div><h3>坐等线索</h3><p>软件 24h 运行，匹配用户自动入库</p></div>
+    <div class="flow-steps">
+      <div class="flow-step reveal">
+        <div class="flow-step-num">01</div>
+        <h3>扫码登录</h3>
+        <p>打开软件，用抖音 App 扫码登录账号，支持多账号管理</p>
+      </div>
+      <div class="flow-step reveal reveal-delay-1">
+        <div class="flow-step-num">02</div>
+        <h3>配置任务</h3>
+        <p>输入监控关键词、选择目标视频、设置回复模板与发送频率</p>
+      </div>
+      <div class="flow-step reveal reveal-delay-2">
+        <div class="flow-step-num">03</div>
+        <h3>自动运行</h3>
+        <p>一键启动，系统 7×24 自动扫描、识别、回复，断线自愈</p>
+      </div>
+      <div class="flow-step reveal reveal-delay-3">
+        <div class="flow-step-num">04</div>
+        <h3>坐等线索</h3>
+        <p>意向用户自动入库，筛选、导出、跟进，全链路闭环</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="audience" id="audience">
+<!-- ═══════════════ Metrics ═══════════════ -->
+<section class="section" id="metrics">
   <div class="container">
-    <div class="sec-header fade-up">
-      <div class="sec-label">适用场景</div>
-      <h2>谁在用获客宝</h2>
+    <div class="section-head-center">
+      <span class="section-eyebrow reveal">关键指标</span>
+      <h2 class="section-title reveal reveal-delay-1">为什么用它代替人工盯评论</h2>
+      <p class="section-subtitle reveal reveal-delay-1">实测响应速度、监控能力、运行时长、识别准确度四个维度</p>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card reveal">
+        <div class="metric-val">10<span class="metric-unit"> 秒</span></div>
+        <div class="metric-label">评论响应延迟 · 比人工快 100 倍</div>
+      </div>
+      <div class="metric-card reveal reveal-delay-1">
+        <div class="metric-val green">300<span class="metric-unit">+</span></div>
+        <div class="metric-label">单账号同时监控视频数</div>
+      </div>
+      <div class="metric-card reveal reveal-delay-2">
+        <div class="metric-val">7×24</div>
+        <div class="metric-label">后台无人值守 · 断线自愈不丢任务</div>
+      </div>
+      <div class="metric-card reveal reveal-delay-3">
+        <div class="metric-val green">99<span class="metric-unit">%</span></div>
+        <div class="metric-label">AI 意向识别准确率</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ Audience ═══════════════ -->
+<section class="section" id="audience" style="background:rgba(255,255,255,0.3);border-top:1px solid var(--border-card)">
+  <div class="container">
+    <div class="section-head-center">
+      <span class="section-eyebrow reveal">适用场景</span>
+      <h2 class="section-title reveal reveal-delay-1">谁在用获客宝</h2>
     </div>
     <div class="audience-grid">
-      <div class="aud-card fade-up"><h3>电商卖家</h3><p>在竞品视频评论区找到对你的产品感兴趣的用户，高效截流</p></div>
-      <div class="aud-card fade-up"><h3>教育培训</h3><p>在知识类视频评论区发现对你的课程感兴趣的用户，自动引导咨询</p></div>
-      <div class="aud-card fade-up"><h3>本地服务</h3><p>在同城视频评论区找到潜在客户，把抖音流量变成本地客源</p></div>
-      <div class="aud-card fade-up"><h3>个人创业者</h3><p>一个人也能 24 小时不间断营销，专注产品和交付</p></div>
+      <div class="aud-card reveal">
+        <div class="aud-icon" style="background:rgba(47,128,255,0.08);color:var(--brand-blue)">🛒</div>
+        <h3>电商卖家</h3>
+        <p>在竞品视频评论区找到对你的产品感兴趣的用户，高效截流转化</p>
+      </div>
+      <div class="aud-card reveal reveal-delay-1">
+        <div class="aud-icon" style="background:rgba(52,211,166,0.1);color:#22c792">📚</div>
+        <h3>教育培训</h3>
+        <p>在知识类视频评论区发现对你的课程感兴趣的用户，自动引导咨询</p>
+      </div>
+      <div class="aud-card reveal reveal-delay-2">
+        <div class="aud-icon" style="background:rgba(124,92,255,0.08);color:var(--brand-violet)">🏪</div>
+        <h3>本地服务</h3>
+        <p>在同城视频评论区找到潜在客户，把抖音流量变成本地客源</p>
+      </div>
+      <div class="aud-card reveal reveal-delay-3">
+        <div class="aud-icon" style="background:rgba(255,106,161,0.08);color:var(--brand-pink)">🚀</div>
+        <h3>个人创业者</h3>
+        <p>一个人也能 24 小时不间断营销，专注产品和交付</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="pricing" id="pricing">
+<!-- ═══════════════ Pricing ═══════════════ -->
+<section class="section" id="pricing">
   <div class="container">
-    <div class="sec-header fade-up">
-      <div class="sec-label">简单定价</div>
-      <h2>用多少，买多少</h2>
-      <p>按需购买，充值即用。推荐好友双方得券</p>
+    <div class="section-head-center">
+      <span class="section-eyebrow reveal">简单定价</span>
+      <h2 class="section-title reveal reveal-delay-1">用多少，买多少</h2>
+      <p class="section-subtitle reveal reveal-delay-1">按需购买，充值即用。推荐好友双方得券，越用越省</p>
     </div>
     <div class="pricing-grid">
-      <div class="price-card fade-up"><h3>免费体验</h3><div class="price-amount">0<span> 元</span></div><div class="price-period">24 小时全功能</div><ul class="price-features"><li>全部功能可用</li><li>无需绑定支付</li><li>下载即用</li></ul><a href="#download" class="btn btn-outline" style="width:100%;justify-content:center">免费下载</a></div>
-      <div class="price-card featured fade-up"><h3>标准版</h3><div class="price-amount">10<span> 元</span></div><div class="price-period">/ 天</div><ul class="price-features"><li>全部功能无限用</li><li>支持优惠券打折</li><li>推荐好友双方得券</li><li>TRC-20 充值</li></ul><a href="#download" class="btn btn-primary" style="width:100%;justify-content:center">免费下载体验</a></div>
-      <div class="price-card fade-up"><h3>推荐奖励</h3><div class="price-amount">免费<span>获得</span></div><div class="price-period">推荐越多折扣越大</div><ul class="price-features"><li>推荐 1 人 = 9 折券</li><li>推荐 5 人 = 5 折券</li><li>推荐 10 人 = 免费使用</li></ul><a href="#download" class="btn btn-outline" style="width:100%;justify-content:center">免费下载</a></div>
+      <div class="price-card reveal">
+        <h3>免费体验</h3>
+        <div class="price-amount">0<span> 元</span></div>
+        <div class="price-period">24 小时全功能</div>
+        <ul class="price-features">
+          <li>全部功能可用</li>
+          <li>无需绑定支付</li>
+          <li>下载即用</li>
+        </ul>
+        <a href="#download" class="btn btn-outline" style="width:100%;justify-content:center">免费下载</a>
+      </div>
+      <div class="price-card featured reveal reveal-delay-1">
+        <h3>标准版</h3>
+        <div class="price-amount">10<span> 元</span></div>
+        <div class="price-period">/ 天</div>
+        <ul class="price-features">
+          <li>全部功能无限用</li>
+          <li>支持优惠券打折</li>
+          <li>推荐好友双方得券</li>
+          <li>TRC-20 充值</li>
+        </ul>
+        <a href="#download" class="btn btn-primary" style="width:100%;justify-content:center">免费下载体验</a>
+      </div>
+      <div class="price-card reveal reveal-delay-2">
+        <h3>推荐奖励</h3>
+        <div class="price-amount">免费<span>获得</span></div>
+        <div class="price-period">推荐越多折扣越大</div>
+        <ul class="price-features">
+          <li>推荐 1 人 = 9 折券</li>
+          <li>推荐 5 人 = 5 折券</li>
+          <li>推荐 10 人 = 免费使用</li>
+        </ul>
+        <a href="#download" class="btn btn-outline" style="width:100%;justify-content:center">免费下载</a>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="cta" id="download">
-  <div class="container fade-up">
-    <img src="logo.png" alt="获客宝" width="96" height="96" style="display:block;margin:0 auto 28px;border-radius:20px;box-shadow:0 8px 32px rgba(79,70,229,0.1)">
-    <h2>准备好开始了吗</h2>
-    <p>下载即享 24 小时免费体验，支持 macOS 和 Windows</p>
+<!-- ═══════════════ CTA / Download ═══════════════ -->
+<section class="cta-section" id="download">
+  <div class="container reveal">
+    <img src="logo.png" alt="获客宝" width="88" height="88" style="display:block;margin:0 auto 24px;border-radius:22px;box-shadow:var(--shadow-glow)">
+    <h2 class="section-title">准备好开始了吗</h2>
+    <p class="section-subtitle" style="margin-bottom:36px">
+      下载即享 24 小时免费体验 · 支持 macOS 和 Windows · 本地部署，不上云
+    </p>
     <div class="hero-actions">
-      <a href="https://github.com/dev-hkb/huokebao/releases/latest" class="btn btn-primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>前往下载页面</a>
+      <a href="https://github.com/dev-hkb/huokebao/releases/latest" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>
+        前往下载页面
+      </a>
       <a href="https://github.com/dev-hkb/huokebao" class="btn btn-outline">查看项目主页</a>
     </div>
   </div>
 </section>
 
-<footer>
-  <img src="logo.png" alt="获客宝" width="32" height="32" style="display:block;margin:0 auto 14px;border-radius:8px">
-  <p>获客宝 - 抖音智能获客专家</p>
-  <p style="margin-top:6px">macOS  Apple Silicon / Intel  &middot;  Windows  x64  &middot;  Node.js 全栈驱动</p>
+<!-- ═══════════════ Footer ═══════════════ -->
+<footer class="site-foot">
+  <div class="foot-brand">
+    <span class="brand-dot"></span>
+    <img src="logo.png" alt="获客宝" width="28" height="28" style="border-radius:8px">
+    获客宝 — 抖音智能获客专家
+  </div>
+  <div class="foot-meta">
+    macOS · Apple Silicon / Intel &nbsp;·&nbsp; Windows · x64 &nbsp;·&nbsp; Node.js 全栈驱动
+  </div>
+  <div class="foot-disclaimer">
+    ⚠️ 免责声明：本系统仅供合法商业用途。请遵守抖音平台规范，理性引流，合法经营。严禁用于垃圾信息群发、恶意骚扰等违规行为。
+  </div>
 </footer>
 
+<!-- ═══════════════ Scroll Reveal ═══════════════ -->
 <script>
-(function(){if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1});document.querySelectorAll('.fade-up').forEach(e=>o.observe(e))})();
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+})();
 </script>
 </body>
 </html>
