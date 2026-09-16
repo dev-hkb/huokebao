@@ -53,7 +53,7 @@
 
 ### 🔐 授权与安全
 - 硬件绑定设备授权（macOS / Windows UUID）
-- 24 小时免费试用
+- 3 天免费试用
 - SQLCipher 加密本地数据库
 
 ---
@@ -80,7 +80,7 @@
 - **macOS**（Apple Silicon / Intel）：下载 `.dmg`，拖入 Applications
 - **Windows**（x64）：下载 `.exe`，双击安装
 
-首次启动自动获得 24 小时免费试用。
+首次启动自动获得 3 天免费试用。
 
 ---
 
